@@ -1,3 +1,15 @@
+/*
+题意：
+在一个数轴上炸弹人按照顺序放置炸弹，每个炸弹有自己的引爆延迟时间和爆炸范围，如果某个炸弹爆炸并且炸死了炸弹人那么炸弹人会浪费1s的时间来复活，现在想知道
+炸弹人完成任务需要多少时间。
+注意若一个炸弹爆炸，爆炸范围的已经安置的其它尚未爆炸的炸弹会被湮灭掉，失去效果
+数轴长度n<=1e5，炸弹个数m<=1e5
+分析：
+用堆来维护炸弹安放和炸弹爆炸两个事件
+若一个炸弹爆炸，那么就把对应爆炸区间用线段树打个标记，表示该区间尚未爆炸的炸弹无效了
+若一个炸弹爆炸，还要判断炸弹人是否被炸死，如果被炸死，那就要把下一个安放炸弹的时间取出来并把时间+1
+时间复杂度O(mlogm)
+*/
 #include<bits/stdc++.h>
 using namespace std;
 const int maxn=1e5;
@@ -75,7 +87,6 @@ int cal(int id,long long t)
 }
 int main()
 {
-    freopen("ce.in","r",stdin);
     int T;
     scanf("%d",&T);
     for(int cas=1;cas<=T;++cas)
@@ -90,11 +101,6 @@ int main()
         int nowb=2,lastdead=0;
         long long turn=0;
         wjmzbmr now;
-       /* for(int i=77645;i<=77665;++i)
-        {
-            printf("%d :    ",i);
-            a[i].output();
-        }*/
         while(!q.empty())
         {
             wjmzbmr u=*q.begin();
@@ -144,6 +150,12 @@ int main()
         }
        printf("%lld\n",ans);
     }
-    cout<<clock()<<endl;
     return 0;
 }
+/*
+1
+3 3 
+2 1 2
+1 1 1
+1 1 3
+*/
