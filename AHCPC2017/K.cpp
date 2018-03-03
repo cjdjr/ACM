@@ -1,3 +1,17 @@
+/*
+题意：
+维护一个只含加法、乘法的算式的结果，支持下列操作：
+1、在算式末尾填上一个*num或者+num
+2、将算式的某项改成*num或者+num
+3、将算式的某项删除掉
+4、询问当前算式的值（结果很大，对大质数取模）
+一共有n个操作,n<=1e5
+分析：
+用线段树来维护，就是单点修改，区间查询
+修改的话一直走到叶子节点，然后向上update就行了
+update仔细讨论一下就行了
+时间复杂度O(nlogn)
+*/
 #include<bits/stdc++.h>
 using namespace std;
 const int mod=1e8+7;
@@ -71,7 +85,6 @@ void change(int k,int l,int r,int id,char op,int num)
 }
 int main()
 {
-    freopen("ce.in","r",stdin);
     int T;
     scanf("%d",&T);
     for(int cas=1;cas<=T;++cas)
@@ -107,6 +120,19 @@ int main()
                         printf("%d\n",(tree[1].sum+tree[1].suf)%mod);
         }
     }
-    cout<<clock()<<endl;
     return 0;
 }
+/*
+
+1
+9
+add + 666
+add * 222
+query
+delete 3
+add * 333
+modify 2 * 233
+query
+delete 4
+query
+*/
