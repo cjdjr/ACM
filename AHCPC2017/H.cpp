@@ -1,3 +1,14 @@
+/*
+题意：
+在一个树上每个点i有一些葡萄c[i]，我们现在的目标是取出尽量多的葡萄
+取葡萄的规则是选择两个相邻的点，同时取出数量相同的葡萄
+有一些点上的葡萄是特殊葡萄，这些葡萄必须全部取完
+你需要回答在取完所有特殊葡萄的情况下，取的葡萄总数的最大值
+n<=1e5,c[i]<=1e4
+分析：
+奇偶分组成二分图，就是带下限的最大流了
+在稀疏图上dinic跑得巨快……
+*/
 #include<bits/stdc++.h>
 using namespace std;
 const int maxn=1e5+5,inf=1e9+1,maxm=3e5+5;
@@ -78,6 +89,7 @@ void dfs(int k)
 {
     for(auto &u:gg[k])
     {
+        //printf("%d\n",u);
         dep[u]=dep[k]+1;
         if(dep[k]%2==1)
         addedge(k,u,inf);
@@ -102,10 +114,13 @@ int main()
         {
             int father;
             scanf("%d%d%d",&father,&c[i],&type[i]);
+            type[i]*=c[i];
             gg[father].push_back(i);
         }
         dep[1]=1;
+        //printf("ok\n");
         dfs(1);
+       // printf("ok\n");
         for(int i=1;i<=n;++i)
             if(dep[i]%2==1) addedge(S,i,c[i]-type[i]),st[S]+=type[i],ed[i]+=type[i];else addedge(i,T,c[i]-type[i]),st[i]+=type[i],ed[T]+=type[i];
         //for(int i=0;i<=n+1;++i) printf("%d : %d\n",i,ed[i]);
@@ -122,6 +137,13 @@ int main()
             printf("%lld\n",2LL*maxflow(S,T));
         }
     }
-    //cout<<clock()<<endl;
     return 0;
 }
+/*
+1
+4
+0 2 0
+1 3 0
+1 1 1
+3 5 0
+*/
