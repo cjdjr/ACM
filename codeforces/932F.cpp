@@ -11,12 +11,18 @@ int n;
 set<Point> s[maxn+5];
 double cross(Point a,Point b,Point c)
 {
+    /*
+    此题做叉积爆了longlong，要用double来判正负
+    */
     ll x=b.first-a.first,y=b.second-a.second;
     ll xx=c.first-b.first,yyy=c.second-b.second;
     return (double)x*yyy-(double)y*xx;
 }
 void insert(set<Point> &s,Point p)
 {
+    /*
+    向凸包s中加入一个点p
+    */
     set<Point>::iterator it=s.lower_bound(p);
     set<Point>::iterator jt=it;
     if(it!=s.begin()) --jt;
@@ -43,6 +49,10 @@ void insert(set<Point> &s,Point p)
 }
 ll query(set<Point> &s,ll k)
 {
+    /*
+    在凸包s中查找斜率为k的时候的最优值
+    注意在容器上二分的姿势
+    */
     if(s.empty()) return 0;
     ll l=s.begin()->first,r=s.rbegin()->first,mid;
     while(l<r)
@@ -60,15 +70,13 @@ void dfs(int k,int fa)
     {
         if(u==fa) continue;
         dfs(u,k);
-        if(s[k].size()<s[u].size()) s[k].swap(s[u]);
+        if(s[k].size()<s[u].size()) s[k].swap(s[u]);//启发式合并
         for(auto x:s[u])
             insert(s[k],x);
         set<Point>().swap(s[u]);
     }
     dp[k]=query(s[k],-a[k]);
     insert(s[k],mp(b[k],dp[k]));
-
-
 }
 int main()
 {
